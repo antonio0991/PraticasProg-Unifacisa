@@ -70,12 +70,11 @@ public class AgenciaController {
 	
 	@PutMapping("/agencia")
 	public ResponseEntity<Agencia> atualizarAgencia(Agencia agencia){
-		if(service.buscarAgenciaPorId(agencia.getNumero()) != null) {
-			service.salvarAgencia(agencia);
+		if(service.atualizarAgencia(agencia) != null) {
 			return new ResponseEntity<Agencia>(agencia, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<Agencia>(agencia, HttpStatus.NO_CONTENT); 
+			return new ResponseEntity<Agencia>(agencia, HttpStatus.NOT_FOUND);
 		}
 	}
 }

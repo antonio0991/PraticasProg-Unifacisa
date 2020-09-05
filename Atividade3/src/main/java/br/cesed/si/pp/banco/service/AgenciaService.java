@@ -32,5 +32,16 @@ public class AgenciaService {
 	public void deletarAgenciaPorId(int id) {
 		repository.deleteById(id);
 	}
+	
+	public Agencia atualizarAgencia(Agencia agencia) {
+		Agencia existeAgencia = repository.findById(agencia.getNumero()).orElse(null);
+		if(existeAgencia != null) {
+			existeAgencia.setGerente(agencia.getGerente());
+			return repository.save(agencia);
+		}
+		else {
+			return null;
+		}
+	}
 
 }

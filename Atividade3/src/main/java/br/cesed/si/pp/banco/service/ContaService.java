@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 
 import br.cesed.si.pp.banco.model.Conta;
 import br.cesed.si.pp.banco.model.Conta;
+import br.cesed.si.pp.banco.model.Conta;
 import br.cesed.si.pp.banco.repository.ContaRepository;
 
 @Service @Validated
@@ -35,5 +36,16 @@ public class ContaService {
 	
 	public void deletarContaPorId(long id) {
 		repository.deleteById(id);
+	}
+	
+	public Conta atualizarConta(Conta conta) {
+		Conta existeConta = repository.findById(conta.getNumero()).orElse(null);
+		if(existeConta != null) {
+			existeConta.setNumero(conta.getNumero());
+			return repository.save(conta);
+		}
+		else {
+			return null;
+		}
 	}
 }

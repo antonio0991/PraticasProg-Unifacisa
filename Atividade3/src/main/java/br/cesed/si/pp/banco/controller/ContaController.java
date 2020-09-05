@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import br.cesed.si.pp.banco.model.Conta;
-import br.cesed.si.pp.banco.service.AgenciaService;
+import br.cesed.si.pp.banco.model.Conta;
+import br.cesed.si.pp.banco.service.ContaService;
 import br.cesed.si.pp.banco.service.ContaService;
 
 public class ContaController {
@@ -20,11 +21,11 @@ public class ContaController {
 	@Autowired
 	private ContaService Cservice;
 	
-	private AgenciaService Aservice;
+	private ContaService Aservice;
 	
 	@PostMapping("/conta")
 	public ResponseEntity<Conta> criarNovaConta(@RequestBody Conta novaConta) {
-		if(Cservice.buscarContaPorId(novaConta.getNumero()) == null && Aservice.buscarAgenciaPorId(novaConta.getAgencia()) != null) {
+		if(Cservice.buscarContaPorId(novaConta.getNumero()) == null && Aservice.buscarContaPorId(novaConta.getNumero()) != null) {
 			Conta contaCriada = Cservice.salvarConta(novaConta);
 			return new ResponseEntity<Conta>(contaCriada, HttpStatus.CREATED);
 		}
@@ -69,13 +70,11 @@ public class ContaController {
 	
 	@PutMapping("/conta")
 	public ResponseEntity<Conta> atualizarConta(Conta conta){
-		if(Cservice.buscarContaPorId(conta.getNumero()) != null) {
-			Cservice.salvarConta(conta);
+		if(Cservice.atualizarConta(conta) != null) {
 			return new ResponseEntity<Conta>(conta, HttpStatus.OK);
 		}
 		else {
-			return new ResponseEntity<Conta>(conta, HttpStatus.NO_CONTENT); 
+			return new ResponseEntity<Conta>(conta, HttpStatus.NOT_FOUND);
 		}
 	}
-	
 }
